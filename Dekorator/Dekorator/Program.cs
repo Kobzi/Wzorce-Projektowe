@@ -9,7 +9,7 @@ namespace Dekorator
     // Standardowy motocykl
     abstract class Motocykl
     {
-        protected string motocykl = "Samochod podstawowy";
+        protected string motocykl = "Motocykl podstawowy";
 
         virtual public String opis()
         {
