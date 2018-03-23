@@ -22,9 +22,7 @@ namespace BazaDanychGUI
             usernameTextBox.Text = "root";
             datebaseTextBox.Text = "test";
             tableTextBox.Text = "user";
-
             listView1.View = View.Details;
-            
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -34,11 +32,8 @@ namespace BazaDanychGUI
 
         private void getDateFromDatebase(String ip, String port, String username, String password, String datebase)
         {
-            string connectionString = "datasource=" +ip+ 
-                                      ";port=" +port+
-                                      ";username=" +username+
-                                      ";password=" +password+ 
-                                      ";database=" +datebase+ ";"
+            string connectionString = "datasource=" +ip+ ";port=" +port+ ";username=" +username+
+                                      ";password=" +password+ ";database=" +datebase+ ";"
                                       ;
           
             MySqlConnection databaseConnection = new MySqlConnection(connectionString);
@@ -65,6 +60,7 @@ namespace BazaDanychGUI
             commandDatabase.CommandTimeout = 60;
             MySqlDataReader reader;
             reader = commandDatabase.ExecuteReader();
+            listView1.Columns.Clear();
 
             if (reader.HasRows)
             {
@@ -94,6 +90,7 @@ namespace BazaDanychGUI
             commandDatabase.CommandTimeout = 60;
             MySqlDataReader reader;
             reader = commandDatabase.ExecuteReader();
+            listView1.Items.Clear();
 
             if (reader.HasRows)
             {
