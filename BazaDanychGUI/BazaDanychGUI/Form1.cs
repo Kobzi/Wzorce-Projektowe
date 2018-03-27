@@ -21,13 +21,15 @@ namespace BazaDanychGUI
             portTextBox.Text = "3306";
             usernameTextBox.Text = "root";
             datebaseTextBox.Text = "test";
-            tableTextBox.Text = "user";
+            tableTextBox.Text = "users";
+
             listView1.View = View.Details;
+            listView1.FullRowSelect = true;
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            
         }
 
         private void getDateFromDatebase(String ip, String port, String username, String password, String datebase)
@@ -55,7 +57,7 @@ namespace BazaDanychGUI
 
         private void getColumnsName(MySqlConnection databaseConnection)
         {
-            string query = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'test' AND TABLE_NAME = 'user';";
+            string query = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '"+ datebaseTextBox.Text + "' AND TABLE_NAME = '"+ tableTextBox.Text + "';";
             MySqlCommand commandDatabase = new MySqlCommand(query, databaseConnection);
             commandDatabase.CommandTimeout = 60;
             MySqlDataReader reader;
@@ -85,7 +87,7 @@ namespace BazaDanychGUI
         }
         private void getDateIntoTable(MySqlConnection databaseConnection)
         {
-            string query = "SELECT * FROM user";
+            string query = "SELECT * FROM " + tableTextBox.Text;
             MySqlCommand commandDatabase = new MySqlCommand(query, databaseConnection);
             commandDatabase.CommandTimeout = 60;
             MySqlDataReader reader;
