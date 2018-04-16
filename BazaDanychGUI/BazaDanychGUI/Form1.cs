@@ -22,13 +22,15 @@ namespace BazaDanychGUI
             usernameTextBox.Text = "root";
             datebaseTextBox.Text = "test";
 
+            tablesComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             listView1.View = View.Details;
             listView1.FullRowSelect = true;
-
-            tablesComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-
+            passwordTextBox.UseSystemPasswordChar=true;
+            
+            addButton.Enabled = false;
             deleteButton.Enabled = false;
             editButton.Enabled = false;
+            sortButton.Enabled = false;
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -37,7 +39,6 @@ namespace BazaDanychGUI
             {
                 deleteButton.Enabled = false;
                 editButton.Enabled = false;
-
             }
             else if (listView1.SelectedItems.Count == 1)
             {
@@ -46,9 +47,9 @@ namespace BazaDanychGUI
             }
             else
             {
+                deleteButton.Enabled = true;
                 editButton.Enabled = false;
             }
-
         }
 
         private void getDataFromDatebase(String ip, String port, String username, String password, String datebase)
@@ -78,20 +79,21 @@ namespace BazaDanychGUI
         private void getTableNames(MySqlConnection databaseConnection)
         {
             string query = "SELECT table_name FROM information_schema.tables where table_schema = '" +datebaseTextBox.Text+ "'";
-            MySqlCommand commandDatabase = new MySqlCommand(query, databaseConnection);
+            MySqlCommand commandDatabase = new MySqlCommand( query, databaseConnection );
             commandDatabase.CommandTimeout = 60;
 
             MySqlDataReader reader;
             reader = commandDatabase.ExecuteReader();
             tablesComboBox.Items.Clear();
 
-            if (reader.HasRows)
+            if ( reader.HasRows )
             {
                 while (reader.Read())
                 {
-                    tablesComboBox.Items.Add(reader.GetString(0));                   
+                    tablesComboBox.Items.Add( reader.GetString(0) );                   
                 }
-                tablesComboBox.SelectedIndex = 0;
+                tablesComboBox.SelectedIndex = 1;
+                addButton.Enabled = true;
             }
             else
             {
@@ -105,6 +107,7 @@ namespace BazaDanychGUI
             string query = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '"+ datebaseTextBox.Text + "' AND TABLE_NAME = '"+ tablesComboBox.SelectedItem.ToString() + "';";
             MySqlCommand commandDatabase = new MySqlCommand(query, databaseConnection);
             commandDatabase.CommandTimeout = 60;
+
             MySqlDataReader reader;
             reader = commandDatabase.ExecuteReader();
             listView1.Columns.Clear();
@@ -139,15 +142,23 @@ namespace BazaDanychGUI
                     var listViewItem = new ListViewItem(row);
                     listView1.Items.Add( listViewItem );
                 }
+                sortButton.Enabled = true;
             }
             else
             {
                 MessageBox.Show("Brak danych w tabeli");
             }
+
             listView1.AutoResizeColumns( ColumnHeaderAutoResizeStyle.ColumnContent );
             listView1.AutoResizeColumns( ColumnHeaderAutoResizeStyle.HeaderSize );
             reader.Close();
         }
+
+        private void add() {
+            //listView1.Columns.Count.ToString();
+        }
+
+        
 
         private void connectButton_Click(object sender, EventArgs e)
         {
@@ -171,6 +182,11 @@ namespace BazaDanychGUI
         }
 
         private void tablesComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
         {
 
         }

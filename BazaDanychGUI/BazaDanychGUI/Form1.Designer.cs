@@ -46,7 +46,7 @@
             this.addButton = new System.Windows.Forms.Button();
             this.deleteButton = new System.Windows.Forms.Button();
             this.editButton = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.sortButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -205,21 +205,22 @@
             this.editButton.Text = "Edytuj";
             this.editButton.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // sortButton
             // 
-            this.button1.Location = new System.Drawing.Point(265, 105);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 24;
-            this.button1.Text = "Sortuj";
-            this.button1.UseVisualStyleBackColor = true;
+            this.sortButton.Location = new System.Drawing.Point(265, 105);
+            this.sortButton.Name = "sortButton";
+            this.sortButton.Size = new System.Drawing.Size(75, 23);
+            this.sortButton.TabIndex = 24;
+            this.sortButton.Text = "Sortuj";
+            this.sortButton.UseVisualStyleBackColor = true;
+            this.sortButton.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(447, 450);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.sortButton);
             this.Controls.Add(this.editButton);
             this.Controls.Add(this.deleteButton);
             this.Controls.Add(this.addButton);
@@ -248,7 +249,6 @@
         #endregion
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.TextBox ipTextBox;
         private System.Windows.Forms.Label ipLabel;
         private System.Windows.Forms.TextBox portTextBox;
         private System.Windows.Forms.Label portLabel;
@@ -264,7 +264,8 @@
         private System.Windows.Forms.Button addButton;
         private System.Windows.Forms.Button deleteButton;
         private System.Windows.Forms.Button editButton;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button sortButton;
+        public System.Windows.Forms.TextBox ipTextBox;
     }
 }
 
