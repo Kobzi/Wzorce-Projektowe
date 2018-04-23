@@ -34,15 +34,15 @@ namespace BazaDanychGUI
             editButton.Enabled = false;
             sortButton.Enabled = false;
         }
-
+        
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count == 0)
+            if ( listView1.SelectedItems.Count == 0 )
             {
                 deleteButton.Enabled = false;
                 editButton.Enabled = false;
             }
-            else if (listView1.SelectedItems.Count == 1)
+            else if ( listView1.SelectedItems.Count == 1 )
             {
                 deleteButton.Enabled = true;
                 editButton.Enabled = true;
@@ -56,10 +56,14 @@ namespace BazaDanychGUI
 
         private void getDataFromDatebase()
         {            
-            db.setDate(ipTextBox.Text, portTextBox.Text, usernameTextBox.Text, passwordTextBox.Text, datebaseTextBox.Text);
+            db.setData(ipTextBox.Text, portTextBox.Text, usernameTextBox.Text, passwordTextBox.Text, datebaseTextBox.Text);
 
             tablesComboBox.Items.Clear();
-            
+            listView1.Columns.Clear();
+            listView1.Items.Clear();
+
+            addButton.Enabled = false;
+
             try
             {               
                 db.Open();
@@ -67,7 +71,10 @@ namespace BazaDanychGUI
                 db.Close();
 
                 if (tablesComboBox.Items.Count > 0)
+                {
                     tablesComboBox.SelectedIndex = 0;
+                    addButton.Enabled = true;
+                }
             }
             catch (Exception ex)
             {
@@ -80,13 +87,13 @@ namespace BazaDanychGUI
             listView1.Columns.Clear();
             listView1.Items.Clear();
 
-            foreach (string listItem in db.getColumnsName(tablesComboBox.SelectedItem.ToString()))
+            foreach ( string listItem in db.getColumnsName( tablesComboBox.SelectedItem.ToString() ) )
             {
                 listView1.Columns.Add(listItem, -2, HorizontalAlignment.Left);
             }
-            foreach (string[] item in db.getData(tablesComboBox.SelectedItem.ToString()))
+            foreach ( string[] item in db.getData( tablesComboBox.SelectedItem.ToString() ) )
             {
-                listView1.Items.Add(new ListViewItem(item));
+                listView1.Items.Add( new ListViewItem(item) );
             }
 
             listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
@@ -121,9 +128,16 @@ namespace BazaDanychGUI
 
         private void tablesComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            db.Open();
-            getDataIntoListView();
-            db.Close();
+            try
+            {
+                db.Open();
+                getDataIntoListView();
+                db.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)

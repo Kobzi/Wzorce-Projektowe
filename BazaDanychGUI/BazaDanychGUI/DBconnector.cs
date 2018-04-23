@@ -19,11 +19,11 @@ namespace BazaDanychGUI
         private string[] ColumnsName;
         private string[] ColumnsTypes;
 
-        MySqlConnection databaseConnection;
-        MySqlCommand commandDatabase;
-        MySqlDataReader reader;
+        private MySqlConnection databaseConnection;
+        //private MySqlCommand commandDatabase;
+        //private MySqlDataReader reader;
 
-        public void setDate(string ipBox, string portBox, string userBox, string passwdBox, string dbBox)
+        public void setData(string ipBox, string portBox, string userBox, string passwdBox, string dbBox)
         {
             this.ip = ipBox;
             this.port = portBox;
@@ -41,24 +41,28 @@ namespace BazaDanychGUI
         {
             List<string> lista = new List<string>();
             List<string> listaTypow = new List<string>();
-            string query = "SELECT COLUMN_NAME, DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" + datebase+ "' AND TABLE_NAME = '" + selectedTable + "';";
-            this.commandDatabase = new MySqlCommand(query, this.databaseConnection);
-            this.commandDatabase.CommandTimeout = 60;
-            this.reader = commandDatabase.ExecuteReader();
 
-            if (this.reader.HasRows)
+            string query = "SELECT COLUMN_NAME, DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" + datebase + "' AND TABLE_NAME = '" + selectedTable + "';";
+            using (MySqlCommand commandDatabase = new MySqlCommand(query, this.databaseConnection))
             {
-                while (this.reader.Read())
+                using ( MySqlDataReader reader = commandDatabase.ExecuteReader() )
                 {
-                    lista.Add(this.reader.GetString(0));
-                    listaTypow.Add(this.reader.GetString(1));                    
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            lista.Add(reader.GetString(0));
+                            listaTypow.Add(reader.GetString(1));
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Brak kolumn w danej tabeli");
+                        //throw new Exception("Brak kolumn w danej tabeli");
+                    }
                 }
             }
-            else
-            {
-                MessageBox.Show("Brak kolumn w danej tabeli");
-            }
-            this.reader.Close();
+            //this.reader.Close();
             this.ColumnsName = lista.ToArray();
             this.ColumnsTypes = listaTypow.ToArray();
             return lista;            
@@ -67,23 +71,27 @@ namespace BazaDanychGUI
         public List<string> getTableNames()
         {            
             List<string> lista = new List<string>();
-            string query = "SELECT table_name FROM information_schema.tables where table_schema = '" + this.datebase + "'";
-            this.commandDatabase = new MySqlCommand(query, this.databaseConnection);
-            this.commandDatabase.CommandTimeout = 60;
-            this.reader = commandDatabase.ExecuteReader();
 
-            if (this.reader.HasRows)
+            string query = "SELECT table_name FROM information_schema.tables where table_schema = '" + this.datebase + "'";
+            using ( MySqlCommand commandDatabase = new MySqlCommand(query, this.databaseConnection) )
             {
-                while (this.reader.Read())
+                using ( MySqlDataReader reader = commandDatabase.ExecuteReader() )
                 {
-                    lista.Add(this.reader.GetString(0));
+                    if ( reader.HasRows )
+                    {
+                        while ( reader.Read() )
+                        {
+                            lista.Add( reader.GetString(0) );
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Brak tabel w danej bazie");
+                        //throw new Exception("Brak tabel w danej bazie");
+                    }
                 }
             }
-            else
-            {
-                MessageBox.Show("Brak tabel w danej bazie");
-            }
-            this.reader.Close();            
+            //this.reader.Close();            
             return lista;
         }
         
@@ -92,41 +100,53 @@ namespace BazaDanychGUI
             List<string[]> lista = new List<string[]>();
 
             string query = "SELECT * FROM " + selectedTable;
-            this.commandDatabase = new MySqlCommand(query, this.databaseConnection);
-            this.commandDatabase.CommandTimeout = 60;
-            this.reader = commandDatabase.ExecuteReader();
-
-            if (this.reader.HasRows)
+            using ( MySqlCommand commandDatabase = new MySqlCommand(query, this.databaseConnection) )
             {
-                while (this.reader.Read())
+                using ( MySqlDataReader reader = commandDatabase.ExecuteReader() )
                 {
-                    string[] row=new string[this.ColumnsTypes.Length];
-                    for (int i = 0; i < this.ColumnsTypes.Length; i++)
+                    if (reader.HasRows)
                     {
-                        switch (this.ColumnsTypes[i])
+                        while (reader.Read())
                         {
-                            case "int":
-                                row[i]=reader.GetInt32(i).ToString();
-                                break;
-                            case "varchar":
-                                row[i]=reader.GetString(i);
-                                break;
+                            string[] row = new string[this.ColumnsTypes.Length];
+                            for (int i = 0; i < this.ColumnsTypes.Length; i++)
+                            {
+                                switch (this.ColumnsTypes[i])
+                                {
+                                    case "int":
+                                        row[i] = reader.GetInt32(i).ToString();
+                                        break;
+                                    case "varchar":
+                                        row[i] = reader.GetString(i);
+                                        break;
+                                }
+                            }
+                            lista.Add(row);
                         }
                     }
-                    lista.Add(row);
-                }
+                    else
+                    {
+                        MessageBox.Show("Brak danych w tabeli");
+                        //throw new Exception("Brak danych w tabeli");
+                    }
+                } 
             }
-            else
-            {
-                MessageBox.Show("Brak danych w tabeli");
-            }
-            this.reader.Close();
+            //this.reader.Close();
             return lista;
+
+        }
+
+        public void AddRecord(string selectedTable, string[] row)
+        {
 
         }
 
         public void Open()
         {
+            if (this.databaseConnection.State != System.Data.ConnectionState.Closed)
+            {
+                this.databaseConnection.Close();
+            }
             this.databaseConnection.Open();
         }
 
@@ -134,6 +154,5 @@ namespace BazaDanychGUI
         {
             this.databaseConnection.Close();
         }
-
     }
 }
