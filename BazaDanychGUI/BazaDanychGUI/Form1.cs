@@ -65,20 +65,27 @@ namespace BazaDanychGUI
             addButton.Enabled = false;
 
             try
-            {               
+            {
                 db.Open();
-                tablesComboBox.Items.AddRange( db.getTableNames().ToArray() );   
-                db.Close();
+                tablesComboBox.Items.AddRange(db.getTableNames().ToArray());
 
                 if (tablesComboBox.Items.Count > 0)
                 {
                     tablesComboBox.SelectedIndex = 0;
                     addButton.Enabled = true;
                 }
+                else
+                {
+                    throw new Exception("Brak tabel w podanej bazie danych");
+                }                    
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                db.Close();
             }
         }
 
@@ -132,11 +139,14 @@ namespace BazaDanychGUI
             {
                 db.Open();
                 getDataIntoListView();
-                db.Close();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                db.Close();
             }
         }
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
-using System.Windows.Forms;
+//using System.Windows.Forms;
 
 namespace BazaDanychGUI
 {
@@ -29,12 +29,7 @@ namespace BazaDanychGUI
             this.port = portBox;
             this.username = userBox;
             this.password = passwdBox;
-            this.datebase = dbBox;
-
-            string connectionString = "datasource=" + this.ip + ";port=" + this.port + ";username=" + this.username +
-                                      ";password=" + this.password + ";database=" + this.datebase + ";"
-                                      ;
-            this.databaseConnection = new MySqlConnection(connectionString);
+            this.datebase = dbBox;                      
         }
 
         public List<string> getColumnsName(string selectedTable)
@@ -57,12 +52,10 @@ namespace BazaDanychGUI
                     }
                     else
                     {
-                        MessageBox.Show("Brak kolumn w danej tabeli");
-                        //throw new Exception("Brak kolumn w danej tabeli");
+                        throw new Exception("Brak kolumn w danej tabeli lub jest z nimi jakiś problem");
                     }
                 }
             }
-            //this.reader.Close();
             this.ColumnsName = lista.ToArray();
             this.ColumnsTypes = listaTypow.ToArray();
             return lista;            
@@ -86,12 +79,10 @@ namespace BazaDanychGUI
                     }
                     else
                     {
-                        MessageBox.Show("Brak tabel w danej bazie");
-                        //throw new Exception("Brak tabel w danej bazie");
+                        throw new Exception("Brak tabel w danej bazie");
                     }
                 }
-            }
-            //this.reader.Close();            
+            }    
             return lista;
         }
         
@@ -108,33 +99,24 @@ namespace BazaDanychGUI
                     {
                         while (reader.Read())
                         {
-                            string[] row = new string[this.ColumnsTypes.Length];
-                            for (int i = 0; i < this.ColumnsTypes.Length; i++)
-                            {
-                                switch (this.ColumnsTypes[i])
-                                {
-                                    case "int":
-                                        row[i] = reader.GetInt32(i).ToString();
-                                        break;
-                                    case "varchar":
-                                        row[i] = reader.GetString(i);
-                                        break;
-                                }
+                            string[] row = new string[reader.FieldCount];
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {                              
+                                row[i] = reader.GetValue(i).ToString();
                             }
                             lista.Add(row);
                         }
                     }
                     else
                     {
-                        MessageBox.Show("Brak danych w tabeli");
-                        //throw new Exception("Brak danych w tabeli");
+                        throw new Exception("Brak danych w tabeli");
                     }
                 } 
             }
-            //this.reader.Close();
             return lista;
-
         }
+
+
 
         public void AddRecord(string selectedTable, string[] row)
         {
@@ -143,9 +125,14 @@ namespace BazaDanychGUI
 
         public void Open()
         {
+            string connectionString = "datasource=" + this.ip + ";port=" + this.port + ";username=" + this.username +
+                                      ";password=" + this.password + ";database=" + this.datebase + ";"
+                                      ;
+            this.databaseConnection = new MySqlConnection(connectionString);
+
             if (this.databaseConnection.State != System.Data.ConnectionState.Closed)
             {
-                this.databaseConnection.Close();
+                this.Close();
             }
             this.databaseConnection.Open();
         }
