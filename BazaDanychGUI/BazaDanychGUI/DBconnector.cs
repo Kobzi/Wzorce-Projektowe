@@ -29,7 +29,12 @@ namespace BazaDanychGUI
             this.port = portBox;
             this.username = userBox;
             this.password = passwdBox;
-            this.datebase = dbBox;                      
+            this.datebase = dbBox;
+
+            string connectionString = "datasource=" + this.ip + ";port=" + this.port + ";username=" + this.username +
+                                      ";password=" + this.password + ";database=" + this.datebase + ";"
+                                      ;
+            this.databaseConnection = new MySqlConnection(connectionString);
         }
 
         public List<string> getColumnsName(string selectedTable)
@@ -120,16 +125,20 @@ namespace BazaDanychGUI
 
         public void AddRecord(string selectedTable, string[] row)
         {
+        }
 
+        public void DeleteRecord(string selectedTable, string collumnName, string index)
+        {
+            string query = "DELETE FROM " + selectedTable + " WHERE " + collumnName + "=" + index;
+
+            using (MySqlCommand commandDatabase = new MySqlCommand(query, this.databaseConnection))
+            {
+                commandDatabase.ExecuteNonQuery();
+            }
         }
 
         public void Open()
         {
-            string connectionString = "datasource=" + this.ip + ";port=" + this.port + ";username=" + this.username +
-                                      ";password=" + this.password + ";database=" + this.datebase + ";"
-                                      ;
-            this.databaseConnection = new MySqlConnection(connectionString);
-
             if (this.databaseConnection.State != System.Data.ConnectionState.Closed)
             {
                 this.Close();
@@ -141,5 +150,6 @@ namespace BazaDanychGUI
         {
             this.databaseConnection.Close();
         }
+
     }
 }

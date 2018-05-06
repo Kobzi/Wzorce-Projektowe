@@ -94,28 +94,64 @@ namespace BazaDanychGUI
             listView1.Columns.Clear();
             listView1.Items.Clear();
 
-            foreach ( string listItem in db.getColumnsName( tablesComboBox.SelectedItem.ToString() ) )
+            try
             {
-                listView1.Columns.Add(listItem, -2, HorizontalAlignment.Left);
+                db.Open();
+
+                foreach (string listItem in db.getColumnsName(tablesComboBox.SelectedItem.ToString()))
+                {
+                    listView1.Columns.Add(listItem, -2, HorizontalAlignment.Left);
+                }
+                listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+
+                foreach (string[] item in db.getData(tablesComboBox.SelectedItem.ToString()))
+                {
+                    listView1.Items.Add(new ListViewItem(item));
+                }
+                listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+
             }
-            foreach ( string[] item in db.getData( tablesComboBox.SelectedItem.ToString() ) )
+            catch (Exception ex)
             {
-                listView1.Items.Add( new ListViewItem(item) );
+                MessageBox.Show(ex.Message);
             }
-
-            listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-            listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-
+            finally
+            {
+                db.Close();
+            } 
         }
 
         private void add() {
             //listView1.Columns.Count.ToString();
+            Form2 frm = new Form2();
+            frm.Show();
+        }
+
+        private void delete()
+        {
+            try
+            {
+                db.Open();
+                foreach (ListViewItem row in listView1.SelectedItems)
+                {
+                    db.DeleteRecord(tablesComboBox.SelectedItem.ToString(), listView1.Columns[0].Text, row.SubItems[0].Text);
+                    //listView1.Items.RemoveAt();
+                }
+                getDataIntoListView();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                db.Close();
+            }
         }
 
         private void connectButton_Click(object sender, EventArgs e)
         {
             getDataFromDatebase();
-
         }
 
         private void tableLabel_Click(object sender, EventArgs e)
@@ -135,24 +171,22 @@ namespace BazaDanychGUI
 
         private void tablesComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                db.Open();
-                getDataIntoListView();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                db.Close();
-            }
+            getDataIntoListView();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void addButton_Click(object sender, EventArgs e)
+        {
+            add();
+        }
+
+        private void deleteButton_Click(object sender, EventArgs e)
+        {
+            delete();
         }
     }
 }

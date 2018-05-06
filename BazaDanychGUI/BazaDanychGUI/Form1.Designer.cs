@@ -186,6 +186,7 @@
             this.addButton.TabIndex = 20;
             this.addButton.Text = "Dodaj";
             this.addButton.UseVisualStyleBackColor = true;
+            this.addButton.Click += new System.EventHandler(this.addButton_Click);
             // 
             // deleteButton
             // 
@@ -195,6 +196,7 @@
             this.deleteButton.TabIndex = 22;
             this.deleteButton.Text = "Usuń";
             this.deleteButton.UseVisualStyleBackColor = true;
+            this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
             // 
             // editButton
             // 
