@@ -120,23 +120,7 @@ namespace BazaDanychGUI
             }
             return lista;
         }
-
-
-
-        public void AddRecord(string selectedTable, string[] row)
-        {
-        }
-
-        public void DeleteRecord(string selectedTable, string collumnName, string index)
-        {
-            string query = "DELETE FROM " + selectedTable + " WHERE " + collumnName + "=" + index;
-
-            using (MySqlCommand commandDatabase = new MySqlCommand(query, this.databaseConnection))
-            {
-                commandDatabase.ExecuteNonQuery();
-            }
-        }
-
+                
         public void DoQuery(string query)
         {
             using (MySqlCommand commandDatabase = new MySqlCommand(query, this.databaseConnection))

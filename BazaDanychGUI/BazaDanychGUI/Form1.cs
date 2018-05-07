@@ -123,12 +123,9 @@ namespace BazaDanychGUI
         }
 
         private void add() {
-            //listView1.Columns.Count.ToString();
-
             try
             {
                 Form2 secondForm = new Form2("addMod");
-
                 string query = "INSERT INTO `" + tablesComboBox.SelectedItem.ToString() + "` VALUES(";
                 for (int i = 0; i < db.ColumnsTypes.Length; i++)
                 {
@@ -157,10 +154,12 @@ namespace BazaDanychGUI
             try
             {
                 db.Open();
+                string query;
                 foreach (ListViewItem row in listView1.SelectedItems)
                 {
-                    db.DeleteRecord(tablesComboBox.SelectedItem.ToString(), listView1.Columns[0].Text, row.SubItems[0].Text);
-                    //listView1.Items.RemoveAt();
+                    query = "DELETE FROM " +tablesComboBox.SelectedItem.ToString()+
+                                   " WHERE " +listView1.Columns[0].Text + "=" + row.SubItems[0].Text;
+                    db.DoQuery(query);
                 }
                 getDataIntoListView();
             }
