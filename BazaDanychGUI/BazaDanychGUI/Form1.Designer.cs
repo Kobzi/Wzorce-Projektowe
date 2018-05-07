@@ -47,6 +47,7 @@
             this.deleteButton = new System.Windows.Forms.Button();
             this.editButton = new System.Windows.Forms.Button();
             this.sortButton = new System.Windows.Forms.Button();
+            this.backButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -219,11 +220,21 @@
             this.sortButton.UseVisualStyleBackColor = true;
             this.sortButton.Click += new System.EventHandler(this.button1_Click);
             // 
+            // backButton
+            // 
+            this.backButton.Location = new System.Drawing.Point(386, 76);
+            this.backButton.Name = "backButton";
+            this.backButton.Size = new System.Drawing.Size(49, 23);
+            this.backButton.TabIndex = 25;
+            this.backButton.Text = "Cofnij";
+            this.backButton.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(447, 450);
+            this.Controls.Add(this.backButton);
             this.Controls.Add(this.sortButton);
             this.Controls.Add(this.editButton);
             this.Controls.Add(this.deleteButton);
@@ -270,6 +281,7 @@
         private System.Windows.Forms.Button editButton;
         private System.Windows.Forms.Button sortButton;
         public System.Windows.Forms.TextBox ipTextBox;
+        private System.Windows.Forms.Button backButton;
     }
 }
 

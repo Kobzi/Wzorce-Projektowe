@@ -56,10 +56,5 @@ namespace BazaDanychGUI
                 DoneFunction();
             }
         }
-
-        private void Form2_Shown(object sender, EventArgs e)
-        {
-             valueTextBox.Focus();
-        }
     }
 }

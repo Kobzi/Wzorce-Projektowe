@@ -15,6 +15,7 @@ namespace BazaDanychGUI
     public partial class Form1 : Form
     {
         DBconnector db = new DBconnector();
+        Stack stos;
 
         public Form1()
         {
@@ -34,6 +35,7 @@ namespace BazaDanychGUI
             deleteButton.Enabled = false;
             editButton.Enabled = false;
             sortButton.Enabled = false;
+            backButton.Enabled = false;
         }
         
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -64,6 +66,7 @@ namespace BazaDanychGUI
             listView1.Items.Clear();
 
             addButton.Enabled = false;
+            backButton.Enabled = false;
 
             try
             {
@@ -127,6 +130,7 @@ namespace BazaDanychGUI
             try
             {
                 Form2 secondForm = new Form2("addMod");
+                secondForm.StartPosition = FormStartPosition.CenterParent;
                 string query = "INSERT INTO `" + tablesComboBox.SelectedItem.ToString() + "` VALUES(";
                 for (int i = 0; i < db.ColumnsTypes.Length; i++)
                 {
@@ -134,6 +138,7 @@ namespace BazaDanychGUI
                     secondForm.ShowDialog();
                     query += "'"+secondForm.tempValue+ "',";
                 }
+                secondForm.Close();
                 query = query.Remove(query.Length - 1);
                 query += ")";
                 db.Open();
@@ -157,6 +162,7 @@ namespace BazaDanychGUI
             try
             {
                 Form2 secondForm = new Form2("editMode");
+                secondForm.StartPosition = FormStartPosition.CenterParent;
                 string query = "UPDATE `" + tablesComboBox.SelectedItem.ToString() + "` SET";
                 for (int i = 0; i < db.ColumnsTypes.Length; i++)
                 {
@@ -164,6 +170,7 @@ namespace BazaDanychGUI
                     secondForm.ShowDialog();
                     query += " `" + listView1.Columns[i].Text + "`='" + secondForm.tempValue + "',";
                 }
+                secondForm.Close();
                 query = query.Remove(query.Length - 1);
                 query += " WHERE "+ listView1.Columns[0].Text+ "='" + listView1.SelectedItems[0].SubItems[0].Text + "'";
                 db.Open();

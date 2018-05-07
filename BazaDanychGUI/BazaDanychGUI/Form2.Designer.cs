@@ -82,7 +82,6 @@
             this.Controls.Add(this.labelTitle);
             this.Name = "Form2";
             this.Text = "Form2";
-            this.Shown += new System.EventHandler(this.Form2_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
