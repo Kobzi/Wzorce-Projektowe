@@ -17,7 +17,7 @@ namespace BazaDanychGUI
         private string datebase;
 
         private string[] ColumnsName;
-        private string[] ColumnsTypes;
+        public string[] ColumnsTypes;
 
         private MySqlConnection databaseConnection;
         //private MySqlCommand commandDatabase;
@@ -131,6 +131,14 @@ namespace BazaDanychGUI
         {
             string query = "DELETE FROM " + selectedTable + " WHERE " + collumnName + "=" + index;
 
+            using (MySqlCommand commandDatabase = new MySqlCommand(query, this.databaseConnection))
+            {
+                commandDatabase.ExecuteNonQuery();
+            }
+        }
+
+        public void DoQuery(string query)
+        {
             using (MySqlCommand commandDatabase = new MySqlCommand(query, this.databaseConnection))
             {
                 commandDatabase.ExecuteNonQuery();

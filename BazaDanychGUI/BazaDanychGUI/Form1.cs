@@ -7,7 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
+//using MySql.Data.MySqlClient;
+using System.Collections;
 
 namespace BazaDanychGUI
 {
@@ -123,8 +124,32 @@ namespace BazaDanychGUI
 
         private void add() {
             //listView1.Columns.Count.ToString();
-            Form2 frm = new Form2();
-            frm.Show();
+
+            try
+            {
+                Form2 secondForm = new Form2("addMod");
+
+                string query = "INSERT INTO `" + tablesComboBox.SelectedItem.ToString() + "` VALUES(";
+                for (int i = 0; i < db.ColumnsTypes.Length; i++)
+                {
+                    secondForm.Set(db.ColumnsTypes[i], "");
+                    secondForm.ShowDialog();
+                    query += "'"+secondForm.tempValue+ "',";
+                }
+                query = query.Remove(query.Length - 1);
+                query += ")";
+                db.Open();
+                db.DoQuery(query);
+                getDataIntoListView();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                db.Close();
+            }
         }
 
         private void delete()
@@ -187,6 +212,11 @@ namespace BazaDanychGUI
         private void deleteButton_Click(object sender, EventArgs e)
         {
             delete();
+        }
+        
+        private void listView1_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            
         }
     }
 }
