@@ -207,6 +207,7 @@
             this.editButton.TabIndex = 23;
             this.editButton.Text = "Edytuj";
             this.editButton.UseVisualStyleBackColor = true;
+            this.editButton.Click += new System.EventHandler(this.editButton_Click);
             // 
             // sortButton
             // 

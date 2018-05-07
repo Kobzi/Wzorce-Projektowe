@@ -122,7 +122,8 @@ namespace BazaDanychGUI
             } 
         }
 
-        private void add() {
+        private void add()
+        {
             try
             {
                 Form2 secondForm = new Form2("addMod");
@@ -137,6 +138,38 @@ namespace BazaDanychGUI
                 query += ")";
                 db.Open();
                 db.DoQuery(query);
+                db.Close();
+
+                getDataIntoListView();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                db.Close();
+            }
+        }
+
+        private void edit()
+        {
+            try
+            {
+                Form2 secondForm = new Form2("editMode");
+                string query = "UPDATE `" + tablesComboBox.SelectedItem.ToString() + "` SET";
+                for (int i = 0; i < db.ColumnsTypes.Length; i++)
+                {
+                    secondForm.Set(db.ColumnsTypes[i], listView1.SelectedItems[0].SubItems[i].Text);
+                    secondForm.ShowDialog();
+                    query += " `" + listView1.Columns[i].Text + "`='" + secondForm.tempValue + "',";
+                }
+                query = query.Remove(query.Length - 1);
+                query += " WHERE "+ listView1.Columns[0].Text+ "='" + listView1.SelectedItems[0].SubItems[0].Text + "'";
+                db.Open();
+                db.DoQuery(query);
+                db.Close();
+
                 getDataIntoListView();
             }
             catch (Exception ex)
@@ -158,7 +191,7 @@ namespace BazaDanychGUI
                 foreach (ListViewItem row in listView1.SelectedItems)
                 {
                     query = "DELETE FROM " +tablesComboBox.SelectedItem.ToString()+
-                                   " WHERE " +listView1.Columns[0].Text + "=" + row.SubItems[0].Text;
+                                   " WHERE " + listView1.SelectedItems[0].SubItems[0].Text + "=" + row.SubItems[0].Text;
                     db.DoQuery(query);
                 }
                 getDataIntoListView();
@@ -216,6 +249,11 @@ namespace BazaDanychGUI
         private void listView1_ColumnClick(object sender, ColumnClickEventArgs e)
         {
             
+        }
+
+        private void editButton_Click(object sender, EventArgs e)
+        {
+            edit();
         }
     }
 }
