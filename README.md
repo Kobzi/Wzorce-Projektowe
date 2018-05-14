@@ -12,7 +12,7 @@ Wykorzystując dodatek MySQL Connector Net 8.0.11, potrafi połączyć się z ja
 * Przyciski odpowiadające za edycje i usuwanie są dostępne tylko jeśli wybierzemy jakiś rekord z tabeli w obiekcie listview, natomiast opcja dodawania jest aktywna tylko wtedy jeśli są jakieś tabele w bazie danych.
 * Wybierając opce Dodaj albo Edytuj, otwierane jest nowe okienko w którym po kolei podajemy wszystkie wartości (przy edycji jest pokazana wpisana stara wartość). Po wszystkim wykonane zostaje zapytanie do bazy dodające nowy rekord lub modyfikujące już istniejący oraz zostaje odświeżona tabela listview.
 * Opcja usuwania działa na wielu rekordach jednoczeście. Wysyła zapytanie do bazy mające usunąć rekord, identyfikując go po pierwszej kolumnie.
-
+* Sortowanie działa przez naciśnięcie nazwy kolumny (Program sortuje względem wybranej kolumny). Drugie kliknięcie na tą samą kolumnę powoduje sortowanie w drugą stronę.
 # TODO:
 
 * Walidacja wprowadzanych danych

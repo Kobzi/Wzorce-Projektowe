@@ -8,13 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 //using MySql.Data.MySqlClient;
-//using System.Collections;
+using System.Collections;
 
 namespace BazaDanychGUI
 {
     public partial class Form1 : Form
     {
         DBconnector db = new DBconnector();
+        private int sortColumn = -1;
 
         public Form1()
         {
@@ -250,12 +251,52 @@ namespace BazaDanychGUI
 
         private void listView1_ColumnClick(object sender, ColumnClickEventArgs e)
         {
+            if (e.Column != sortColumn)
+            {
+                sortColumn = e.Column;
+                listView1.Sorting = SortOrder.Ascending;
+            }
+            else
+            {
+                if (listView1.Sorting == SortOrder.Ascending)
+                    listView1.Sorting = SortOrder.Descending;
+                else
+                    listView1.Sorting = SortOrder.Ascending;
+            }
 
+            this.listView1.ListViewItemSorter = 
+                new ListViewItemComparer(e.Column, listView1.Sorting);
         }
 
         private void editButton_Click(object sender, EventArgs e)
         {
             edit();
+        }
+    }
+
+    //https://msdn.microsoft.com/pl-pl/library/system.windows.forms.listview.listviewitemsorter(v=vs.110).aspx
+    public class ListViewItemComparer : IComparer
+    {
+        private int col;
+        private SortOrder order;
+        public ListViewItemComparer()
+        {
+            col = 0;
+            order = SortOrder.Ascending;
+        }
+        public ListViewItemComparer(int column, SortOrder order)
+        {
+            col = column;
+            this.order = order;
+        }
+        public int Compare(object x, object y)
+        {
+            int returnVal = -1;
+            returnVal = String.Compare(((ListViewItem)x).SubItems[col].Text,
+                            ((ListViewItem)y).SubItems[col].Text);
+            if (order == SortOrder.Descending)
+                returnVal *= -1;
+            return returnVal;
         }
     }
 }
