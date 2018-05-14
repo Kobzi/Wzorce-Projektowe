@@ -32,7 +32,7 @@ namespace BazaDanychGUI
             this.datebase = dbBox;
 
             string connectionString = "datasource=" + this.ip + ";port=" + this.port + ";username=" + this.username +
-                                      ";password=" + this.password + ";database=" + this.datebase + ";"
+                                      ";password=" + this.password + ";database=" + this.datebase + ";SslMode=none;"
                                       ;
             this.databaseConnection = new MySqlConnection(connectionString);
         }

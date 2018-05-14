@@ -8,14 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 //using MySql.Data.MySqlClient;
-using System.Collections;
+//using System.Collections;
 
 namespace BazaDanychGUI
 {
     public partial class Form1 : Form
     {
         DBconnector db = new DBconnector();
-        Stack stos;
 
         public Form1()
         {
