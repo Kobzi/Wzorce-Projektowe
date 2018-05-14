@@ -21,5 +21,15 @@ namespace Fasada
             this.nazwisko = nazwisko;
         }
 
+        public string getImie()
+        {
+            return this.imie;
+        }
+
+        public string getNazwisko()
+        {
+            return this.nazwisko;
+        }
+
     }
 }

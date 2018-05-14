@@ -10,6 +10,20 @@ namespace Fasada
     {
         static void Main(string[] args)
         {
+            Person user = new Person();
+            user.setImie("Jan");
+            user.setNazwisko("Kowalski");
+
+            Console.WriteLine("Imie: " +user.getImie());
+            Console.WriteLine("Nazwisko: " +user.getNazwisko());
+
+            Console.WriteLine("\nWyświetlenie imienia i nazwiska przez inną klasę:");
+            PersonFacade userFacade = new PersonFacade(user);
+            Console.WriteLine(userFacade.getName());
+
+
+
+            Console.ReadLine();
         }
     }
 }
