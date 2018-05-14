@@ -98,6 +98,8 @@ namespace BazaDanychGUI
         {
             listView1.Columns.Clear();
             listView1.Items.Clear();
+            this.listView1.ListViewItemSorter =
+                new ListViewItemComparer(0, listView1.Sorting); // Przy zmianie tabeli, automatycznie sortuje względem pierwszej kolumny
 
             foreach (string listItem in db.getColumnsName(tablesComboBox.SelectedItem.ToString()))
             {
@@ -181,7 +183,7 @@ namespace BazaDanychGUI
                 foreach (ListViewItem row in listView1.SelectedItems)
                 {
                     query = "DELETE FROM " + tablesComboBox.SelectedItem.ToString() +
-                                   " WHERE " + listView1.SelectedItems[0].SubItems[0].Text + "=" + row.SubItems[0].Text;
+                                   " WHERE " + listView1.Columns[0].Text + "=" + row.SubItems[0].Text;
                     db.DoQuery(query);
                 }
                 getDataIntoListView();
