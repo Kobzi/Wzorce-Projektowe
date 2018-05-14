@@ -12,11 +12,8 @@ Wykorzystując dodatek MySQL Connector Net 6.10.6, potrafi połączyć się z ja
 * Wybierając opce Dodaj albo Edytuj, otwierane jest nowe okienko w którym po kolei podajemy wszystkie wartości (przy edycji jest pokazana wpisana stara wartość). Po wszystkim wykonane zostaje zapytanie do bazy dodające nowy rekord lub modyfikujące już istniejący oraz zostaje odświeżona tabela listview.
 * Opcja usuwania działa na wielu rekordach jednoczeście. Wysyła zapytanie do bazy mające usunąć rekord, identyfikując go po pierwszej kolumnie.
 
+# TODO:
 
-
-TODO:
-
-Walidacja wprowadzanych danych
-Sortowanie
-Cofanie przy użyciu memento
-
+* Walidacja wprowadzanych danych
+* Sortowanie
+* Cofanie operacji przy użyciu wzorca memento
